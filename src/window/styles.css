@@ -1,0 +1,39 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.grid-vertical {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.grid-horizontal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+
+.grid-child {
+  margin: 1em;
+  padding: 0;
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}

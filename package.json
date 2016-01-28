@@ -1,0 +1,21 @@
+{
+  "name": "pulsar-charts",
+  "version": "0.0.1",
+  "description": "pulsar-charts",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron bin/start.js"
+  },
+  "author": "kazet",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-es2016-node5": "1.1.2",
+    "babel-preset-react": "6.3.13",
+    "babel-register": "6.4.3",
+    "config": "1.19.0",
+    "electron-prebuilt": "0.36.5",
+    "react": "0.14.6",
+    "react-dom": "0.14.6",
+    "react-stockcharts": "0.3.1"
+  }
+}

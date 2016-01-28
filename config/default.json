@@ -1,0 +1,17 @@
+{
+  "receiver": {
+    "hosts": {
+      "controller": "pulsar:46001",
+      "streamer": "pulsar:46002"
+    },
+    "port": 46000,
+    "channels": 16,
+    "samples": 4096,
+    "frequency": 1
+  },
+  "window": {
+    "width": 1024,
+    "height": 768,
+    "row": 4
+  }
+}
