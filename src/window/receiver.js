@@ -6,6 +6,8 @@ import { Socket } from 'net';
 const Receiver = function ({ hosts, port, channels, samples, frequency }) {
   EventEmitter.call(this);
 
+  this.hasStarted = false;
+
   const floatSize = 4;
   const channelSize = floatSize * samples;
   const bufferSize = channels * channelSize;
@@ -58,8 +60,13 @@ const Receiver = function ({ hosts, port, channels, samples, frequency }) {
   });
 
   this.start = () => {
+    if (this.hasStarted) {
+      return;
+    }
+
     const [ host, port ] = hosts.controller.split(':');
     controller.connect(port, host);
+    this.hasStarted = true;
   };
 };
 

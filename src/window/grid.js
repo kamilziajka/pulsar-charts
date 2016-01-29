@@ -21,9 +21,12 @@ Grid.prototype = Object.create(Component.prototype);
 Grid.prototype.constructor = Grid;
 
 Grid.prototype.componentDidMount = function () {
-  this.receiver
-    .on('channels', channels => this.setState({ channels }))
-    .start();
+  this.channelHandler = (channels) => this.setState({ channels });
+  this.receiver.on('channels', this.channelHandler).start();
+};
+
+Grid.prototype.componentWillUnmount = function () {
+  this.receiver.removeListener('channels', this.channelHandler);
 };
 
 Grid.prototype.render = function () {
@@ -40,13 +43,16 @@ Grid.prototype.render = function () {
       return previous;
     }, []);
 
-  rows = rows.map(row => row.map((value, index) => (
-    <div className="grid-child" key={`chart-${index}`}>
-      <div className="grid-container">
-        <Chart samples={this.state.channels[index]}/>
+  rows = rows.map((row, rowIndex) => row.map((value, childIndex) => {
+    const index = rowIndex * rowSize + childIndex;
+    return (
+      <div className="grid-child" key={`chart-${index}`}>
+        <div className="grid-container">
+          <Chart samples={this.state.channels[index]}/>
+        </div>
       </div>
-    </div>
-  )));
+    );
+  }));
 
   rows = rows.map((row, index) => (
     <div className="grid-horizontal" key={`row-${index}`}>{ row }</div>

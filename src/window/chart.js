@@ -1,10 +1,11 @@
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import { ChartCanvas, Chart as StockChart, DataSeries, EventCapture, series, axes } from 'react-stockcharts';
 const { AreaSeries } = series;
-const { XAxis, YAxis } = axes;
+const { XAxis } = axes;
 
 const Chart = function () {
   Component.call(this);
@@ -15,27 +16,61 @@ Chart.prototype.constructor = Chart;
 
 Chart.prototype.prepareData = (samples) => samples.map((value, index) => ({value, index}));
 
+Chart.prototype.shouldComponentUpdate = function (nextProps, nextState) {
+  return (
+    this.state.width !== nextState.width ||
+    this.state.height !== nextState.height
+  );
+};
+
+Chart.prototype.componentWillMount = function () {
+  const { width, height } = this.props;
+  this.state = { width, height };
+};
+
+Chart.prototype.componentDidMount = function () {
+  this.resizeHandler = () => {
+    const parent = ReactDOM.findDOMNode(this).parentNode;
+
+    const width = parent.clientWidth < Chart.defaultProps.width ?
+      Chart.defaultProps.width :
+      parent.clientWidth;
+
+    const height = parent.clientHeight < Chart.defaultProps.height ?
+      Chart.defaultProps.height :
+      parent.clientHeight;
+
+    this.setState({ width, height });
+  };
+
+  window.addEventListener('resize', this.resizeHandler);
+  this.resizeHandler();
+};
+
+Chart.prototype.componentWillUnmount = function () {
+  window.removeEventListener('resize', this.resizeHandler);
+};
+
 Chart.prototype.componentWillReceiveProps = function (props) {
   const { samples } = props;
   const { chart } = this.refs;
 
-  if (samples) {
-    const data = this.prepareData(samples);
-    chart.alterData(data);
-  }
+  const data = this.prepareData(samples);
+  chart.alterData(data);
 };
 
 Chart.prototype.render = function () {
-  const { width, height, type, samples } = this.props;
+  const { width, height } = this.state;
+  const { type, samples } = this.props;
 
   const data = this.prepareData(samples);
-  const margin = { left: 70, right: 10, top: 10, bottom: 30 };
+  //const margin = { left: 70, right: 10, top: 10, bottom: 30 };
+  const margin = { left: 10, right: 10, top: 10, bottom: 30 };
 
   return (
-    <ChartCanvas width={width} height={height} margin={margin} data={data} type={type} ref="chart">
+    <ChartCanvas width={width} height={height} margin={margin} data={data} type={type} ref={`chart`}>
       <StockChart id={0} xAccessor={sample => sample.index}>
-        <XAxis axisAt="bottom" orient="bottom" ticks={6}/>
-        <YAxis axisAt="left" orient="left"/>
+        <XAxis axisAt="bottom" orient="bottom" ticks={5}/>
         <DataSeries id={0} yAccessor={sample => sample.value}>
           <AreaSeries/>
         </DataSeries>
@@ -50,8 +85,8 @@ Chart.propTypes = {
 };
 
 Chart.defaultProps = {
-  width: 400,
-  height: 200,
+  width: 240,
+  height: 120,
   type: 'svg'
 };
 
