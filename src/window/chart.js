@@ -64,7 +64,6 @@ Chart.prototype.render = function () {
   const { type, samples } = this.props;
 
   const data = this.prepareData(samples);
-  //const margin = { left: 70, right: 10, top: 10, bottom: 30 };
   const margin = { left: 10, right: 10, top: 10, bottom: 30 };
 
   return (
@@ -75,7 +74,7 @@ Chart.prototype.render = function () {
           <AreaSeries/>
         </DataSeries>
       </StockChart>
-      <EventCapture mouseMove={true} zoom={true} pan={true} mainChart={0} defaultFocus={false}/>
+      <EventCapture mouseMove={true} zoom={true} pan={true} mainChart={0} defaultFocus={true}/>
     </ChartCanvas>
   );
 };

@@ -10,7 +10,11 @@ export default () => {
 
   const createWindow = () => {
     window = new BrowserWindow(options);
-    window.webContents.openDevTools();
+
+    if (process.env['NODE_ENV'] === 'development') {
+      window.webContents.openDevTools();
+    }
+
     window.loadURL(`file://${resolve(__dirname, 'window/index.html')}`);
     window.on('closed', () => window = null);
   };

@@ -7,3 +7,7 @@ export function range(size) {
 
   return [ ...g(size) ];
 }
+
+export function setTitle(title) {
+  document.title = title;
+}
