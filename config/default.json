@@ -12,6 +12,6 @@
   "window": {
     "width": 1024,
     "height": 768,
-    "row": 4
+    "rowSize": 4
   }
 }

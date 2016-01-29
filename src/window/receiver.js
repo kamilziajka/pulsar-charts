@@ -11,6 +11,8 @@ const Receiver = function ({ hosts, port, channels, samples, frequency }) {
   const bufferSize = channels * channelSize;
 
   const emitChannels = (buffer) => {
+    const all = [];
+
     for (let i = 0; i < channels; i++) {
       const channel = new Array(samples);
 
@@ -18,8 +20,11 @@ const Receiver = function ({ hosts, port, channels, samples, frequency }) {
         channel[j] = buffer.readFloatLE((i * channelSize) + (j * floatSize));
       }
 
+      all.push(channel);
       this.emit(`channel-${i}`, channel);
     }
+
+    this.emit('channels', all);
   };
 
   const [ controller, streamer ] = ['controller', 'streamer'].map((name) => {

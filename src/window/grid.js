@@ -2,31 +2,57 @@
 
 import React, { Component } from 'react';
 import config from 'config';
+import Receiver from './receiver';
+import Chart from './chart';
+import { range } from './helpers';
 
+const Grid = function () {
+  Component.call(this);
 
-class Grid extends Component {
-  render() {
-    const { children } = this.props;
+  const options = config.get('receiver');
+  this.receiver = new Receiver(options);
 
-    const rowSize = config.get('window.row');
-    const rows = [];
-    let row = [];
+  this.state = {
+    channels: range(options.channels).map(() => range(options.samples))
+  };
+};
 
-    let r = 0;
-    for (let i = 0; i < children.length; i++) {
-      row.push(children[r]);
+Grid.prototype = Object.create(Component.prototype);
+Grid.prototype.constructor = Grid;
 
-      if (++r === rowSize) {
-        rows.push(<div key={`row-${rows.length}`} className="grid-horizontal">{row}</div>);
-        row = [];
-        r = 0;
+Grid.prototype.componentDidMount = function () {
+  this.receiver
+    .on('channels', channels => this.setState({ channels }))
+    .start();
+};
+
+Grid.prototype.render = function () {
+  const { channels } = config.get('receiver');
+  const { rowSize } = config.get('window');
+
+  let rows = range(channels)
+    .reduce((previous, current, index) => {
+      if (!(index % rowSize)) {
+        previous.push([]);
       }
-    }
 
-    return (
-      <div className="grid-vertical">{rows}</div>
-    )
-  }
-}
+      previous[previous.length - 1].push(current);
+      return previous;
+    }, []);
+
+  rows = rows.map(row => row.map((value, index) => (
+    <div className="grid-child" key={`chart-${index}`}>
+      <div className="grid-container">
+        <Chart samples={this.state.channels[index]}/>
+      </div>
+    </div>
+  )));
+
+  rows = rows.map((row, index) => (
+    <div className="grid-horizontal" key={`row-${index}`}>{ row }</div>
+  ));
+
+  return <div className="grid-vertical">{ rows }</div>;
+};
 
 export default Grid;
