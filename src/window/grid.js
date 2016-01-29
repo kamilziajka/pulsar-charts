@@ -30,12 +30,11 @@ Grid.prototype.componentWillUnmount = function () {
 };
 
 Grid.prototype.render = function () {
-  const { channels } = config.get('receiver');
-  const { rowSize } = config.get('window');
+  const { channels, columns } = config.get('receiver');
 
   let rows = range(channels)
     .reduce((previous, current, index) => {
-      if (!(index % rowSize)) {
+      if (!(index % columns)) {
         previous.push([]);
       }
 
@@ -44,7 +43,7 @@ Grid.prototype.render = function () {
     }, []);
 
   rows = rows.map((row, rowIndex) => row.map((value, childIndex) => {
-    const index = rowIndex * rowSize + childIndex;
+    const index = rowIndex * columns + childIndex;
     return (
       <div className="grid-child" key={`chart-${index}`}>
         <div className="grid-container">

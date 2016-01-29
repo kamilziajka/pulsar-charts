@@ -10,7 +10,7 @@ $ npm start
 
 Development environment and custom config
 ```
-$ NODE_ENV="development" NODE_CONFIG='{"window":{"width": 1920, "height": 1080}}' npm start
+$ NODE_ENV="development" NODE_CONFIG='{"receiver":{"columns": 2}}' npm start
 ```
 
 ## License

@@ -5,18 +5,17 @@ import config from 'config';
 import { resolve } from 'path';
 
 export default () => {
-  const options = config.get('window');
   let window;
 
   const createWindow = () => {
-    window = new BrowserWindow(options);
+    window = new BrowserWindow;
+    window.maximize();
+    window.loadURL(`file://${resolve(__dirname, 'window/index.html')}`);
+    window.on('closed', () => window = null);
 
     if (process.env['NODE_ENV'] === 'development') {
       window.webContents.openDevTools();
     }
-
-    window.loadURL(`file://${resolve(__dirname, 'window/index.html')}`);
-    window.on('closed', () => window = null);
   };
 
   app.on('ready', createWindow);

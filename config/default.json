@@ -7,11 +7,7 @@
     "port": 46000,
     "channels": 16,
     "samples": 4096,
-    "frequency": 1
-  },
-  "window": {
-    "width": 1024,
-    "height": 768,
-    "rowSize": 4
+    "frequency": 1,
+    "columns": 4
   }
 }
