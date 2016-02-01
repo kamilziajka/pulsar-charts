@@ -1,6 +1,6 @@
 {
   "name": "pulsar-charts",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "pulsar-charts",
   "main": "bin/start.js",
   "scripts": {
