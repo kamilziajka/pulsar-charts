@@ -1,5 +1,6 @@
 'use strict';
 
+import '../set-cwd';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import config from 'config';

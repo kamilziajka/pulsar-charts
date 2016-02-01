@@ -1,5 +1,6 @@
 'use strict';
 
+import './set-cwd';
 import electron, { app, BrowserWindow } from 'electron';
 import config from 'config';
 import { resolve } from 'path';
