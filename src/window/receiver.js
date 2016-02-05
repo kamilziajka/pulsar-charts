@@ -50,13 +50,14 @@ const Receiver = function ({ hosts, port, channels, samples, frequency }) {
     }
   });
 
+  const startStreamer = () => {
+    const [ host, port ] = hosts.streamer.split(':');
+    streamer.connect(port, host);
+  };
+
   controller.on('connect', () => {
     controller.write(`niwa start ${port} Mark5B-512-${channels}-2 ${frequency} ${samples}`);
-
-    setTimeout(() => {
-      const [ host, port ] = hosts.streamer.split(':');
-      streamer.connect(port, host);
-    }, 3000);
+    setTimeout(startStreamer, 3000);
   });
 
   this.start = () => {
@@ -64,8 +65,14 @@ const Receiver = function ({ hosts, port, channels, samples, frequency }) {
       return;
     }
 
-    const [ host, port ] = hosts.controller.split(':');
-    controller.connect(port, host);
+    if (hosts.controller) {
+      const [ host, port ] = hosts.controller.split(':');
+      controller.connect(port, host);
+    }
+    else {
+      startStreamer();
+    }
+
     this.hasStarted = true;
   };
 };
